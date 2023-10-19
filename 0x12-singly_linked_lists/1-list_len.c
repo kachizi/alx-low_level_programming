@@ -10,7 +10,7 @@
 
 size_t print_list(const list_t *h)
 {
-	size_t banner = 0;
+	size_t counter = 0;
 
 	while (h != NULL)
 	{
@@ -19,9 +19,9 @@ size_t print_list(const list_t *h)
 		else
 			printf("[%u] %s\n", h->len, h->str);
 
-		++banner;
+		++counter;
 		h = h->next;
 	}
 
-return (banner);
+return (counter);
 }
