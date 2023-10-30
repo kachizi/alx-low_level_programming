@@ -1,44 +1,44 @@
 #include "main.h"
 
 /**
- * read_textfile - reads letters from a text file and prints them
- * @filename: filename.
- * @letters: numbers of letters printed.
- * Return: numbers of letters printed. If it fails, returns 0.
+ * read_textfile - reads a text file and prints it to the POSIX standard output
+ * @filename: name of the file to be read
+ * @letters: number of letters to read and print
+ * PESSYKAPERE
+ * Return: the number of letters printed, or 0 if it failed
  */
+
 ssize_t read_textfile(const char *filename, size_t letters)
 {
-	int fod;
-	ssize_t nrd, nwr;
-	char *buff;
+	char *buffer;
+	int r, w; /* read & write character counter */
+	int f;  /* File descriptor */
 
 	if (!filename)
 		return (0);
 
-	fod = open(filename, O_RDONLY);
-	if (fod == -1)
+	f = open(filename, O_RDONLY);
+	if (f < 0)
 		return (0);
 
-	buff = malloc(sizeof(char) * (letters + 1)); // Allocate space for the null terminator
-	if (!buff)
+	buffer = malloc(letters * sizeof(char));
+	if (buffer == NULL)
 		return (0);
 
-	nrd = read(fod, buff, letters);
-	if (nrd == -1) {
-		free(buff);
-		close(fod);
-		return (0);
-	}
-
-	nwr = write(STDOUT_FILENO, buff, nrd);
-	if (nwr == -1) {
-		free(buff);
-		close(fod);
+	r = read(f, buffer, letters);
+	if (r < 0)
+	{
+		free(buffer);
 		return (0);
 	}
+	buffer[r] = '\0';
+	close(f);
 
-	close(fod);
-	free(buff);
+	w = write(STDOUT_FILENO, buffer, r);
+	free(buffer);
 
-	return (nwr);
+	if (w < 0)
+		return (0);
+
+return (w);
 }
